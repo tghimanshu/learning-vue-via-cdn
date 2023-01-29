@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <div id="app">
+      <!-- Show Message -->
+      <h1>Display Reactive Data</h1>
+      <p>{{ message }}</p>
+
+      <!-- Display based on conditions -->
+      <h1>Conditionals -> v-if v-else</h1>
+      <h2>Simple if else</h2>
+      <p v-if="message.length % 2 === 0">Even: {{ message }}</p>
+      <p v-else>Odd: {{ message }}</p>
+
+      <h2>if elseif chain</h2>
+      <p v-if="message.length === 5">
+        there are five characters: {{ message }}
+      </p>
+      <p v-else-if="message.length % 2 === 0">Even: {{ message }}</p>
+      <p v-else>Odd: {{ message }}</p>
+
+      <!-- Display List -->
+      <h1>Loops -> v-for</h1>
+      <h2>Normal Loop</h2>
+      <ul>
+        <li v-for="anime in listOfAnimes">{{ anime }}</li>
+      </ul>
+
+      <h2>Loop with index</h2>
+      <ul>
+        <li v-for="(anime, index) in listOfAnimes">
+          {{ index + ' ; '+anime }}
+        </li>
+      </ul>
+
+      <h1>User Input, Events and Binding</h1>
+      <h2>Manual Binding</h2>
+      <div>
+        <p>{{count}}</p>
+        <input
+          type="text"
+          placeholder="Enter Increment Number"
+          v-bind:value="incrementAmt"
+          v-on:input="changeIncrementAmt"
+        />
+        <button v-on:click="incrementAmount">Increment</button>
+      </div>
+      <!-- V Model -->
+      <h2>V Model</h2>
+      <div>
+        <p>{{count}}</p>
+        <input
+          type="text"
+          placeholder="Enter Increment Number"
+          v-model="incrementAmt"
+        />
+        <button v-on:click="incrementAmount">Increment</button>
+      </div>
+      <p>{{ displayTitle }}</p>
+      <p>PS: you can replace `v-bind:` to `:`, `v-on:` to `@`</p>
+      <hr />
+      <h1>Watchers and Computed Properties</h1>
+    </div>
+    <!-- <h2>Computed Property: {{ heroTitleComputed }}</h2> -->
+
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <script>
+      const { createApp } = Vue;
+
+      //   Create App
+      const app = createApp({
+        data() {
+          return {
+            message: "Hello Vue World!",
+            counterTitle: "not working",
+            listOfAnimes: [
+              "Naruto",
+              "Naruto Shippuden",
+              "The Rising of the Shield Hero",
+              "Sword Art Online",
+            ],
+            count: 0,
+            incrementAmt: 1,
+          };
+        },
+        computed: {
+          displayTitle() {
+            if (this.count > 10) {
+              return "Yo - About to spam messages";
+            } else {
+              return "Yo";
+            }
+          },
+        },
+        methods: {
+          changeIncrementAmt(event) {
+            this.incrementAmt = Number(event.target.value);
+          },
+          incrementAmount() {
+            this.count += this.incrementAmt;
+          },
+        },
+        watch: {
+          count(newValue) {
+            if (newValue) {
+              this.message += " too long";
+            }
+          },
+        },
+      });
+
+      //   Mounted to #app in UI
+      app.mount("#app");
+    </script>
+  </body>
+</html>
